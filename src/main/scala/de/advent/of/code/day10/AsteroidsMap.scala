@@ -35,7 +35,7 @@ object AsteroidsMap {
     val n = source.y - (m * source.x)
 
     maybeBlocks
-      .filter(asteroid => asteroid.y == ((m * asteroid.x) + n).toInt) // y = m * x + n
+      .filter(asteroid => asteroid.y == ((m * asteroid.x) + n)) // y = m * x + n
       .flatMap(item => {
         if (isBetweenSourceAndTarget(item, source, target)) {
           Some(item)
@@ -61,8 +61,8 @@ object AsteroidsMap {
     }
 
   private def isBetweenSourceAndTarget(asked: Position, source: Position, target: Position) =
-    ((source.x < asked.x && target.x > asked.x) || (source.x > asked.x && target.x < asked.x)) &&
-    ((source.y < asked.y && target.y > asked.y) || (source.y > asked.y && target.y < asked.y))
+    ((source.x <= asked.x && target.x >= asked.x) || (source.x >= asked.x && target.x <= asked.x)) &&
+    ((source.y <= asked.y && target.y >= asked.y) || (source.y >= asked.y && target.y <= asked.y))
 
   def createMap(lines: Vector[String]): AsteroidsMap = {
     val map = lines.map(line => {
