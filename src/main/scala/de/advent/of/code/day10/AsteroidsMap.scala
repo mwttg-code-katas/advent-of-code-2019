@@ -25,17 +25,21 @@ object AsteroidsMap {
     val maybeBlocks = allAsteroidPositions.diff(Set(source, target))
 
     val horizontalBlocks = getHorizontalBlocks(source, target, maybeBlocks)
-    val linearFuncBlocks = getLinearFuncBlocks(source, target, maybeBlocks)
 
+    val linearFuncBlocks = if (target.x != source.x) {
+      getLinearFuncBlocks(source, target, maybeBlocks.diff(horizontalBlocks))
+    } else {
+      Set.empty[Position]
+    }
     horizontalBlocks.union(linearFuncBlocks)
   }
 
   private def getLinearFuncBlocks(source: Position, target: Position, maybeBlocks: Set[Position]) = {
-    val m = (target.y - source.y) / (target.x - source.x).toFloat
+    val m = BigDecimal(target.y - source.y) / BigDecimal(target.x - source.x)
     val n = source.y - (m * source.x)
 
     maybeBlocks
-      .filter(asteroid => asteroid.y == ((m * asteroid.x) + n)) // y = m * x + n
+      .filter(asteroid => BigDecimal(asteroid.y).compare((m * asteroid.x) + n) == 0) // y = m * x + n
       .flatMap(item => {
         if (isBetweenSourceAndTarget(item, source, target)) {
           Some(item)

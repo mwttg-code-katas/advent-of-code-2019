@@ -7,8 +7,8 @@ object Day10 {
     solvePuzzle1()
 
   def solvePuzzle1(): Unit = {
-    // val lines = FileUtilities.read("day10/input.txt")
-    val lines = testInput4
+    val lines = FileUtilities.read("day10/input.txt")
+    // val lines = testInput4
     val asteroidsMap   = AsteroidsMap.createMap(lines)
     val asteroid = Scanner.scan(asteroidsMap)
     println(asteroid)
